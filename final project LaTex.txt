@@ -1,0 +1,184 @@
+documentclass[twocolumn,letterpaper,10pt]{article}
+usepackage{times}
+usepackage{helvet}
+usepackage{courier}
+usepackage{txfonts}
+frenchspacing
+%setlength{pdfpagewidth}{8.5in}
+%setlength{pdfpageheight}{11in}
+
+%used for pseudocode
+usepackage{algpseudocode}
+
+%used to make charts
+usepackage{pgfplotstable}
+usepackage{pgfplots}
+
+%used for mathematical notation
+usepackage{amsfonts}
+
+%used to control spacing in table captions
+usepackage{subfig}
+
+%used to import images
+usepackage{graphicx}
+
+%used to specify table placement
+usepackage{float}
+
+% Make it so lists don't have extra line spacing
+usepackage{enumitem}
+setlist{noitemsep}
+
+usepackage{hyperref} % for url
+
+% For nice, customizable code listings
+usepackage{listings}
+lstset{ %httpstackoverflow.comquestions586572make-code-in-latex-look-nice
+	language=Java,
+	basicstyle=footnotesize,       % font size
+	numbers=left,                      % where line numbers appear
+	numberstyle=footnotesize,   % size of line numbers
+	stepnumber=1,                    % how often line numbers appear
+	numbersep=5pt,                   % space between line numbers and code
+	showstringspaces=false,       % whether or not to show a _ in strings
+	frame=single,                       % what kind of frame should be around the code
+	xleftmargin=1.5em,
+	xrightmargin=1em,
+	framexleftmargin=0em,
+	%rulecolor=color{black},         % for the frame
+	tabsize=2,                             % set the number of spaces for tabs
+	breaklines=true,                     % set whether or not linebreaking should occur
+	breakatwhitespace=true,          % set whether or not linebreaking should occur only at spaces
+	lineskip={-1.0pt}
+	%commentstyle=color{mygreen}, % color for code comments
+	%numberstyle=color{mygray}, % style for line numbers
+}
+
+
+renewcommand{today}{}
+
+%usepackage{plain} % for the bibliography
+
+title{NBA Position Guesser}
+
+author{Temuulen Nyamdavaa 
+
+Computer Science Junior, DePauw University
+Greencastle, IN 46135, U.S.A.
+{tt tnyamdavaa_2024@depauw.edu} 
+}
+
+%define mathematical equations for repeated use
+newcommand{sigmoid}{$$S(t)=frac{1}{1+e^{-t}}$$}
+newcommand{sigmoidprime}{$$S'(t)=S(t) cdot (1 - S(t))$$}
+
+begin{document}
+
+maketitle
+
+begin{abstract}
+
+In this paper, we present a machine learning model that aims to predict the position of an NBA player based on their statistics. We used a dataset of player statistics from the 1997-1998 season to the 2021-2022 season and preprocessed it by cleaning and normalizing the data, as well as selecting relevant features for position prediction. We trained a neural network on the preprocessed data using supervised learning, where the position of the player is the target variable. Our model was able to predict player positions with a reasonable degree of accuracy. However, I also discuss the limitations of the model and the challenges that come with trying to predict a player's position in today's game where players are becoming increasingly versatile.
+
+
+end{abstract}
+
+
+
+section{Introduction}
+
+In the world of sports, statistics play a crucial role in the analysis and prediction of player performance. In basketball, the role of a player on the court is defined by their position, which can greatly affect their statistics. However, as time goes by, players continue to evolve and it becomes even more difficult to pin a position on players. Our goal in this project was to create a machine learning model that could predict the position of an NBA player based on their statistics. To achieve this, we used a dataset of player statistics from the 1997-1998 season to the 2021-2022 season. We preprocessed the data by cleaning and normalizing it, as well as selecting relevant features for position prediction. We then trained a neural network on the preprocessed data using supervised learning, where the position of the player is the target variable.
+
+
+section{Details}
+To make an AI model we have be doing these  
+1. Defining the problem and gathering data The first step in creating an AI model is to clearly define the problem you want to solve and gather the necessary data to train and test the model. This might involve collecting data from various sources, such as public datasets or scraping from websites.
+
+2. Preprocessing the data Once you have the data, you will need to preprocess it to make it suitable for use in your model. This might include cleaning the data, removing missing or duplicate values, and transforming the data into a format that can be used by the model.
+
+3. Choosing an algorithm There are many different algorithms available for creating AI models, such as decision trees, random forests, and neural networks. You will need to choose an algorithm that is appropriate for the problem you are trying to solve and the data you have available.
+
+4. Training the model The next step is to train the model using the data you have gathered. This will involve using the algorithm you have chosen to create a model that can accurately predict the outcome of the problem you are trying to solve.
+
+5. Testing the model After the model is trained, you will need to test it to see how well it performs on new, unseen data. This will give you an idea of how accurate the model is and whether it needs further improvement.
+
+6. Fine-tuning the model If the model does not perform as well as you would like, you may need to fine-tune it by adjusting the parameters or changing the algorithm.
+
+7. Deploying the model Once the model is performing well, you can deploy it in a production environment where it can be used to make predictions on new data.
+
+8. Monitoring and maintaining the model After deploying the model, it is important to monitor its performance and make updates or improvements as needed to ensure that it continues to perform well over time.
+
+The first step of this final project was to gather a large dataset of NBA player statistics, including their performance in various categories such as points, rebounds, assists, etc. Acquiring the data for NBA player statistics was relatively straightforward, as I simply searched for a dataset online and found one that covered the 1997-1998 season to the 2021-2022 season. The challenging aspect was cleaning and addressing any discrepancies in the data. The dataset I obtained had a significant number of missing values, particularly in the early years of stat tracking in the league. Many players had missing values in various categories, with the most notable being FT and FT percentage. To address this issue, I utilized the KNNImputer function from sklearn.impute to fill in the missing values with the mean of the respective column or replace them with 0’s. It's worth noting that the results were similar regardless of whether the missing values were filled with the mean or 0's. 
+
+Used correlation coefficient and feature importance to determine relevant statistics categories to use to train the guesser. However, after seeing the results of the two functions there were some conflicting opinions on the importance of some of the categories. The correlation coefficient seemed to indicate that offensive and defensive rebounds alongside shot attempts were important. I, as an avid NBA fan, felt different. To me, true rebounding and the field goal percentage mattered instead of the metrics I mentioned previously based on the idea of shot tendencies of each player and the minutes they get to play, and overall their ability to perform.
+
+
+begin{figure}[h]
+    centering
+    resizebox{0.5textwidth}{!}{includegraphics{bar_chart.png}}
+    caption{Importance Stats across 5 positions}
+    label{figfigure_label}
+end{figure}
+
+This simple bar chart shows the five main basketball statistics — Points, Rebounds, Assists, Steals and Blocks — and how they are distributed among the five positions. While points per game don't vary between the positions, we can see that categories like rebounds and assists differ greatly ranging from point guard to center. 
+
+begin{figure}[h]
+    centering
+    resizebox{0.5textwidth}{!}{includegraphics{pairplot.png}}
+    caption{Scatter plot for all combinations}
+    label{figfigure_label}
+end{figure}
+
+Here we see scatter plots of all possible xy-axis combinations. The first thing I notice is the general positive correlation in these graphs — meaning, as the x-axis values increase, so do the y-values. This makes sense to me, as it tells me that the better a player is at one particular category, chances are, they are also good at other statistical categories (good players don’t just do one thing well). However, with TRB and AST, it appears the opposite is true generally speaking, the more assists a player has, or the more rebounds, the less of the other stat they will have.
+
+
+section{Experiments}
+
+First, I created two dataframes favorite players who define their position well, and players who play a more “position-less” game, one in which their stats are not confined to the traditional responsibilities of their position. 
+
+The Gradient Boosted Tree was able to correctly guess the position for the first data frame guessing 4 out of 5 but struggled quite a bit on the second data frame guessing only 1. 
+
+
+
+section{Results}
+
+For the model, I went ahead and tried almost all the models I knew of. kNN, Gradient Boosting Tree, Random Forests, Decision Tree, and Neural Network. With kNN performing the worst with a mere 0.51 accuracy. Decision tree coming in second to last with 0.64 bumping up to a 0.68 with the main categories. RandomForest performed about the same with Decision tree but a slight increase but not significant enough for it to matter. With Gradient Boosted Trees performed the best with 0.74 accuracy even when taking into account every single category. 
+
+begin{tabular}{cc}
+  GBT, 072 & GBT, 0.74 
+  RnF, 0.67 & RnF, 0.65 
+  DecT, 0.68 & DecT, 0.64 
+  kNN, 0.51 & kNN, 0.51 
+end{tabular}
+
+The results of the experiments showed that the model was able to achieve relatively high accuracy in predicting the player's position based on their statistics. I also found that different architectures and subsets of the data had different effects on the model's performance, with some performing better than others. But most importantly, it is much harder to determine a player's position only based on their stats without taking physical measurements into account. 
+
+
+
+section{Analysis}
+
+Gradient Boosted Trees (GBT) are a type of ensemble method that combines multiple decision trees to improve the overall performance of the model. GBT is particularly effective when the data is noisy or has complex interactions between features. The algorithm works by iteratively training decision trees and adjusting the weights of the observations based on the errors made by the previous trees. This allows the model to focus on the areas of the data where the previous trees performed poorly, resulting in a more accurate and robust model. GBT also allows for the use of different loss functions and regularization techniques, which can further improve the performance of the model. Therefore, in our case it performed the best.
+
+Regarding the NBA, it has become more difficult to guess a player's position in the NBA due to a number of factors. One factor is the increased versatility and skill of players. Many players today have the ability to play multiple positions, making it harder to categorize them into traditional positions. Additionally, the way the game is played has changed, with an emphasis on small-ball lineups and pace-and-space offenses, leading to a blurring of traditional positions. The use of analytics and advanced statistics has also led to a more nuanced understanding of player roles and contributions, making it harder to assign a single position to a player. As a result, players are increasingly being described in terms of their skills and abilities rather than their traditional position.
+
+section{Future Work}
+
+In my future work, I would like to expand the dataset to include more players and seasons, as well as include more statistics for each player. I would also like to explore other machine learning techniques and models, such as support vector machines, to see if they can achieve similar or even better results.
+
+
+section{Conclusion}
+In this paper, I presented a machine learning model that is able to predict a player's position in the game of basketball based on their statistics. The model was trained using the TensorFlow library and so much more of what python has to offer and a dataset of NBA player statistics, and it was able to achieve a reasonable degree of accuracy. But most importantly, it showed me that the game of basketball is ever-evolving and that positions do not define a player and their abilities. 
+
+
+bibliographystyle{plain}
+bibliography{latexIntro}
+
+Every quick reference guide by Professor Steve
+Decision Tree - httpsen.wikipedia.orgwikiDecision_tree
+NBA Player Stats- httpsdata.worldetocconba-player-stats
+NBA Machine Learning Position Predictor- httpsmedium.comanalytics-vidhyanba-machine-learning-position-predictor-488fef42ac1c
+Gradient Boosted Tree-httpsc3.aiglossarydata-sciencegradient-boosted-decision-trees-gbdt#~text=Gradient
+
+
+end{document}
